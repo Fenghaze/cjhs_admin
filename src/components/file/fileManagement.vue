@@ -75,7 +75,7 @@
 
     <el-table-column label="文件名称">
       <template slot-scope="scope">
-        <a :href="'http://10.141.105.211:8080/file/show/' + scope.row.id" v-html="scope.row.name"></a>
+        <a :href="'http://47.93.231.64:8080/file/show/' + scope.row.id" v-html="scope.row.name"></a>
       </template>
     </el-table-column>
     <el-table-column prop="content" label="相关内容">
@@ -98,7 +98,7 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button @click="showEditMsgBox(scope.row)" size="mini" plain type="primary" icon="el-icon-edit" circle></el-button>
-        <a :href="'http://10.141.105.211:8080/file/download/' + scope.row.id">
+        <a :href="'http://47.93.231.64:8080/file/download/' + scope.row.id">
           <el-button size="mini" plain type="success" icon="el-icon-download" circle></el-button>
         </a>
         <el-button @click="deleteFile(scope.row)" size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
@@ -250,7 +250,7 @@ export default {
         var that = this
         this.$http.get('/file/delete/' + val.id).then((response) => {
           if (response.status === 200)
-            that.getposts(1)
+            that.getposts(0)
         }).catch(function (error) {
           alert(error)
         })
@@ -282,7 +282,7 @@ export default {
         that.$message.success('删除成功!');
         this.multipleSelection = []
         if (response.status === 200)
-          that.getposts(1)
+          that.getposts(0)
       })
     },
 
@@ -415,7 +415,6 @@ export default {
         const res = await this.$http.get('/query', formdata)
         this.posts_lst = res.data.fileDTOS
         this.total = res.data.all_count
-
         this.$message.success("列表加载成功！")
       } else {
         const res = await this.$http.get('/query?page=' + this.page, formdata)

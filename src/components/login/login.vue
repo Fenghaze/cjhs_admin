@@ -27,7 +27,7 @@
     <el-form-item>
       <el-row>
         <el-col :span="8">
-          <el-image :src="url" alt="验证码" id="image" @click="changeImg()"></el-image>
+          <el-image class="verily-img" :src="url" alt="验证码" id="image" @click="changeImg()"></el-image>
         </el-col>
         <el-col :span="16">
           <el-input v-model="code"></el-input>
@@ -65,21 +65,21 @@ export default {
       formdata.append("name", this.name)
       formdata.append("password", this.password)
       formdata.append("code", this.code)
-      
+
       const res = await this.$http.post('/login', formdata)
-      
+
       const {
         code,
         admin_name,
         message
-      } = res.data 
-      
+      } = res.data
+
       if (code === 1014) {
           sessionStorage.setItem('admin_name', admin_name)
           this.$message.success(message)
           this.$router.push({
             name: 'home'
-          })       
+          })
         } else if (code === 2014) {
           this.$message.warning(message)
         } else if (code === 2006) {
@@ -93,7 +93,7 @@ export default {
         } else {
           this.$message.warning("登陆失败！")
         }
-        
+
     },
 
     // 点击图片更改验证码图片
@@ -101,7 +101,7 @@ export default {
       this.url = this.GLOBAL.baseURL + '/verify_img?' + randomBytes(1)
     },
 
-    // 
+    //
 
 
 
@@ -110,6 +110,8 @@ export default {
 </script>
 
 <style lang="">
+
+
 .login-wrap {
   height: 100%;
   background-color: #324152;
@@ -120,6 +122,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.verily-img{
+  cursor: pointer;
 }
 
 .login-wrap .login-form {

@@ -17,6 +17,7 @@ import Welcome from '@/components/home/welcome.vue'
 Vue.use(Router)
 
 export default  new Router({
+  base:'/admin',
   routes: [
     {
       name: 'login',

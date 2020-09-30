@@ -9,67 +9,72 @@
         </div>
       </el-col>
       -->
-      <el-col :span="23" class="middle">
-        <h3>中华人民共和国长江海事局</h3>
+      <el-col :span="21" class="middle">
+        <i class="el-icon-menu"></i>
+        <span>中华人民共和国长江海事局</span>
       </el-col>
-      <el-col :span="1">
+      <el-col :span="3">
         <div class="grid-content bg-purple">
-          <a href="#" class="loginout" @click="handleLoginout()">退出</a>
+          <span>
+            <i class="el-icon-user"></i><a href="#"  class="loginout" @click="handleLoginout()">退出</a>
+          </span>
         </div>
       </el-col>
     </el-row>
   </el-header>
   <el-container>
     <el-aside class="aside" width="200px">
-      <el-menu router="true">
-        <!--1.账号管理-->
-        <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span>账号管理</span>
-          </template>
-          <el-menu-item index="user">用户管理</el-menu-item>
+      <el-card style="height: 99%" >
+        <el-menu router="true" style="border-right: 0px">
+          <!--1.账号管理-->
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>账号管理</span>
+            </template>
+            <el-menu-item index="user">用户管理</el-menu-item>
 
-        </el-submenu>
+          </el-submenu>
 
-        <!--2.文件管理-->
-        <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-folder-opened"></i>
-            <span>文件管理</span>
-          </template>
-          <el-menu-item index="fileup">文件上传</el-menu-item>
-          <el-menu-item index="file_mul_up">多文件上传</el-menu-item>     
-          <el-menu-item index="file_management">文件查阅/删除</el-menu-item>
-          <el-menu-item index="file_opts">操作记录</el-menu-item>
-          <el-menu-item index="file_review" disabled>文件删除审核</el-menu-item>
-        </el-submenu>
+          <!--2.文件管理-->
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-folder-opened"></i>
+              <span>文件管理</span>
+            </template>
+            <el-menu-item index="fileup">文件上传</el-menu-item>
+            <el-menu-item index="file_mul_up">多文件上传</el-menu-item>
+            <el-menu-item index="file_management">文件查阅/删除</el-menu-item>
+            <el-menu-item index="file_opts">操作记录</el-menu-item>
+            <el-menu-item index="file_review" disabled>文件删除审核</el-menu-item>
+          </el-submenu>
 
-        <!--3.意见反馈-->
-        <el-submenu index="3">
-          <template slot="title">
-            <i class="el-icon-chat-dot-square"></i>
-            <span>意见反馈</span>
-          </template>
-          <el-menu-item index="comment">意见反馈</el-menu-item>
-        </el-submenu>
+          <!--3.意见反馈-->
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-chat-dot-square"></i>
+              <span>意见反馈</span>
+            </template>
+            <el-menu-item index="comment">意见反馈</el-menu-item>
+          </el-submenu>
 
-        <!--4.文件信息导出-->
-        <el-submenu index="4">
-          <template slot="title">
-            <i class="el-icon-files"></i>
-            <span>文件信息导出</span>
-          </template>
-          <!--<el-menu-item index="exp_excel">导出Excel</el-menu-item>-->
-          <a :href="this.GLOBAL.baseURL + '/file/downloadexcel'" style="text-decoration:none"><el-menu-item>导出Excel</el-menu-item></a>
-        </el-submenu>
+          <!--4.文件信息导出-->
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="el-icon-files"></i>
+              <span>文件导出</span>
+            </template>
+            <!--<el-menu-item index="exp_excel">导出Excel</el-menu-item>-->
+            <a :href="this.GLOBAL.baseURL + '/file/downloadexcel'" style="text-decoration:none"><el-menu-item>导出Excel</el-menu-item></a>
+          </el-submenu>
 
-        <el-menu-item index="5" disabled>
-          <i class="el-icon-document"></i>
-          <span slot="title">待增加项</span>
-        </el-menu-item>
+          <el-menu-item index="5" disabled>
+            <i class="el-icon-document"></i>
+            <span slot="title">待增加项</span>
+          </el-menu-item>
 
-      </el-menu>
+        </el-menu>
+      </el-card>
     </el-aside>
     <el-main class="main">
       <router-view></router-view>
@@ -97,7 +102,7 @@ export default {
   created() {
     this.$router.push({
       name: 'welcome'
-    })   
+    })
   },
   methods: {
     // 获取导航数据
@@ -135,7 +140,10 @@ export default {
 }
 
 .aside {
-  padding-top:20px
+  padding-top:20px;
+  background-color: #e9eef3;
+  height: 100%;
+  padding-bottom: 14px;
 }
 
 .main {
@@ -144,14 +152,18 @@ export default {
 
 /*头部样式*/
 .middle {
-  text-align: center;
+  text-align: left;
+  font-size: 23px;
+  margin-top: 12px;
 }
 
 .loginout {
   text-decoration: none;
   line-height: 60px;
   color: #fff;
-  font-size: 20px;
+  font-size: 17px;
+  text-align: right;
+  margin-left: 10px;
 }
 
 .loginout:hover {

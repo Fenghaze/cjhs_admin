@@ -8,7 +8,7 @@
   </el-breadcrumb>
 
   <!--反馈信息表单-->
-  <el-table :data="comments_lst" stripe style="width: 100%">
+  <el-table :data="comments_lst" stripe style="width: 100%;margin-top: 20px;">
     <!--可向下扩展的折叠框-->
     <el-table-column type="expand">
       <template slot-scope="props">

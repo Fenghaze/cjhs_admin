@@ -148,6 +148,7 @@ export default {
 
 .main {
   background-color: #e9eef3;
+  overflow-y: hidden;
 }
 
 /*头部样式*/

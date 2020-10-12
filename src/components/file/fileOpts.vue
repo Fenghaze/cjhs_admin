@@ -38,7 +38,7 @@
   </el-table>
 
   <!--分页-->
-  <el-pagination @current-change="handleCurrentChange" :current-page="page" page-size="20" layout="total, prev, pager, next, jumper" :total="total">
+  <el-pagination @current-change="handleCurrentChange" :current-page="page" page-size="15" layout="total, prev, pager, next, jumper" :total="total">
   </el-pagination>
 </el-card>
 </template>

@@ -18,11 +18,13 @@
         <el-option v-for="item in searchform.select" :key="item" :value="item">{{item}}</el-option>
       </el-select>&nbsp;&nbsp;
       <el-button type="success" @click="search(0)">检索</el-button>
+      <el-button type="danger" @click="multi_del()">批量删除</el-button>
     </el-col>
   </el-row>
 
-  <el-table :data="posts_lst" style="width: 100%" stripe :row-class-name="tableRowClassName">
-
+  <el-table :data="posts_lst" style="width: 100%" stripe :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+    <el-table-column type="selection" width="55">
+    </el-table-column>
     <el-table-column type="index" label="#" width="100">
     </el-table-column>
     <el-table-column prop="filename" label="文件名">
@@ -30,6 +32,8 @@
     <el-table-column prop="opt_time_s" label="操作时间">
     </el-table-column>
     <el-table-column prop="operation" label="操作类型">
+    </el-table-column>
+    <el-table-column prop="operator" label="操作人员">
     </el-table-column>
   </el-table>
 
@@ -43,6 +47,7 @@
 export default {
   data() {
     return {
+      multipleSelection: [],
       posts_lst: [],
       total: 0,
       page: JSON.parse(sessionStorage.getItem('currentPage')) || 1,
@@ -50,7 +55,8 @@ export default {
       form: {
         filename: '', // 文件名称
         opt_time: '', // 操作时间
-        operation: '', // 操作类型      
+        operation: '', // 操作类型
+        operator: ''  //操作人员
       },
       searchform: {
         time: '',
@@ -132,6 +138,33 @@ export default {
       this.search(val)
     },
 
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+
+    multi_del()
+    {
+      this.$confirm('此操作将永久删除已选文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        var that = this
+        // multipleSelection里面是对象数组，需要取出数组中每一个对象的id值
+        //可以用map() 方法返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值
+        //var id_list = arr.map(function(item){return item.id});
+        //item为数组中的一项，在这里相当于其中一个对象
+        var id_list = this.multipleSelection.map(function (item) {
+          return item.id
+        })
+        const response = await this.$http.get('/del_opts?idstring=' + id_list.toString())
+        if (response.status === 200)
+          that.$message.success('删除成功!');
+        this.multipleSelection = []
+        this.search(0)
+
+      })
+    }
   },
 }
 </script>

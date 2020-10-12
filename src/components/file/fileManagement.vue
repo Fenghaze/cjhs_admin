@@ -55,14 +55,23 @@
       &nbsp;至&nbsp;
       <el-date-picker v-model="searchform.pub_time_end" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
     </el-col>
-    <el-col :span="2">
+    <el-col :span="1.5">
       <el-button type="success" @click="search(0)">高级检索</el-button>
     </el-col>
-    <el-col :span="2">
+    <el-col :span="1.5">
       <el-button type="danger" @click="multi_del()">批量删除</el-button>
     </el-col>
-    <el-col :span="2">
+    <el-col :span="1.5">
       <el-button type="primary" @click="multi_down()">批量下载</el-button>
+    </el-col>
+    <el-col :span="1.5">
+      <download-excel class = "export-excel-wrapper"
+                      :data = "multipleSelection"
+                      :fields = "json_fields"
+                      name = "长江海事局法律法规文件信息表.xls"
+                      type = "csv">
+        <el-button type="primary">批量导出</el-button>
+      </download-excel>
     </el-col>
   </el-row>
 
@@ -75,10 +84,11 @@
 
     <el-table-column label="文件名称">
       <template slot-scope="scope">
-        <a :href="'http://47.93.231.64:8080/file/show/' + scope.row.id" v-html="scope.row.name"></a>
+        <a :href="base_url+'/file/show/' + scope.row.id" v-html="scope.row.name"></a>
       </template>
     </el-table-column>
-    <el-table-column prop="content" label="相关内容">
+    <el-table-column prop="num" label="颁布文号"> </el-table-column>
+    <el-table-column label="相关内容">
       <template slot-scope="scope">
         <p v-html="scope.row.content"></p>
       </template>
@@ -98,10 +108,10 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button @click="showEditMsgBox(scope.row)" size="mini" plain type="primary" icon="el-icon-edit" circle></el-button>
-        <a :href="'http://47.93.231.64:8080/file/download/' + scope.row.id">
+        <a :href="base_url+'/file/download/' + scope.row.id">
           <el-button size="mini" plain type="success" icon="el-icon-download" circle></el-button>
         </a>
-        <el-button @click="deleteFile(scope.row)" size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
+        <el-button @click="deleteFile(scope.row, scope.$index)" size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -162,6 +172,27 @@
 export default {
   data() {
     return {
+      // 导出表格设置
+      json_fields: {
+        "文件文号": "num",    //常规字段
+        "文件名称": "name", //支持嵌套属性
+        "业务类型": "service_type",
+        "文件类型": "file_type",
+        "效力层级": "scope",
+        "颁布单位": "dept",
+        "生效时间": "effect_time_s",
+        "发布时间": "pub_time_s"
+      },
+      json_meta: [
+        [
+          {
+            " key ": " charset ",
+            " value ": " utf- 8 "
+          }
+        ]
+      ],
+
+      base_url: this.GLOBAL.baseURL,
       routename: 'file_management',
       posts_lst: [],
       del_lst: [],
@@ -240,17 +271,18 @@ export default {
   },
   methods: {
     // 删除文件
-    deleteFile(val) { // 添加到删除列表
+    deleteFile(val, index) { // 添加到删除列表
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message.success('已添加到删除审核列表!');
+
         var that = this
         this.$http.get('/file/delete/' + val.id).then((response) => {
           if (response.status === 200)
-            that.getposts(0)
+            this.$message.success('删除成功!');
+            this.posts_lst.splice(index, 1);
         }).catch(function (error) {
           alert(error)
         })
@@ -277,12 +309,12 @@ export default {
         var id_list = this.multipleSelection.map(function (item) {
           return item.id
         })
-        //toString()把数组转换为字符串 
+        //toString()把数组转换为字符串
         const response = await this.$http.get('/file/multidel?idstring=' + id_list.toString())
-        that.$message.success('删除成功!');
-        this.multipleSelection = []
         if (response.status === 200)
-          that.getposts(0)
+          that.$message.success('删除成功!');
+        this.multipleSelection = []
+        this.getposts(0)
       })
     },
 
@@ -333,8 +365,6 @@ export default {
       if (res.status === 200) {
         // 关闭对话框
         this.dialogFormVisibleEdit = false
-        // 更新视图
-        this.getposts(0)
         this.$message.success('编辑成功')
       } else {
         this.$message.warning('编辑失败')
@@ -358,8 +388,8 @@ export default {
        if (this.searchform.pub_time_end != '') {
         formdata.append('pub_time_end', String(this.searchform.pub_time_end));
       }
-      
-      
+
+
       if (this.searchform.service_type === '全部' | this.searchform.service_type === '业务类型：') {
         this.searchform.service_type = ''
       }
@@ -415,6 +445,7 @@ export default {
         const res = await this.$http.get('/query', formdata)
         this.posts_lst = res.data.fileDTOS
         this.total = res.data.all_count
+
         this.$message.success("列表加载成功！")
       } else {
         const res = await this.$http.get('/query?page=' + this.page, formdata)

@@ -7,18 +7,19 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/reset.css'
 import MyServerHttp from '@/plugins/http.js'
-import globalVariable from '@/global_var.js'
+import GLOBAL from '@/global_var.js'
 import XLSX from 'xlsx'
+import JsonExcel from 'vue-json-excel'
 
+Vue.component('downloadExcel', JsonExcel)
 
-Vue.prototype.GLOBAL = globalVariable
+Vue.prototype.GLOBAL = GLOBAL
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(MyServerHttp)
 Vue.use(XLSX)
-
 
 /* eslint-disable no-new */
 new Vue({

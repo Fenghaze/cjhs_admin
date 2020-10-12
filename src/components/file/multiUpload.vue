@@ -13,7 +13,7 @@
   <el-steps :active="active" direction="vertical">
     <el-step title="步骤 1">
       <template slot="description">
-        <el-upload limit="1" class="upload-demo" ref="upload" :http-request="uploadSectionFile" :action="this.GLOBAL.baseURL+'/file/upload_excel'"
+        <el-upload limit="1" class="upload-demo" ref="upload" :http-request="uploadSectionFile" :action="baseURL+'/file/upload_excel'"
                    :on-change="handleChange" :file-list="fileList" :auto-upload="false"
                    accept=".xls">
         <el-button slot="trigger" type="primary" style="margin:20px">选取Excel</el-button>
@@ -28,7 +28,7 @@
     </el-step>
     <el-step title="步骤 3">
       <template slot="description">
-        <el-upload multiple class="upload-demo" ref="upload2" :http-request="uploadMultiFile" :action="this.GLOBAL.baseURL+'/file/addMultiFiles'"
+        <el-upload multiple class="upload-demo" ref="upload2" :http-request="uploadMultiFile" :action="baseURL+'/file/addMultiFiles'"
                     :on-change="handleMultiChange" :file-list="fileListMulti" :auto-upload="false"
                     :show-file-list=false  accept=".doc, .docx, .pdf">
           <el-button slot="trigger" type="primary" style="margin:20px">选取文件</el-button>
@@ -154,7 +154,7 @@ export default {
       console.log(file, fileList);
     },
     handlePreview(file) {
-      debugger
+
 
     },
     handleExceed(files, fileList) {

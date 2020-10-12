@@ -10,7 +10,7 @@
       <!--文件上传表单-->
       <el-form ref="form" :model="form" label-width="80px" style="margin-top: 20px">
         <el-form-item label="选择文件">
-          <el-upload limit="1" class="upload-demo" ref="upload" :http-request="uploadSectionFile" :action="this.GLOBAL.baseURL+'/file/add'" :on-change="handleChange" :file-list="fileList" :auto-upload="false" accept=".doc, .docx, .pdf">
+          <el-upload limit="1" class="upload-demo" ref="upload" :http-request="uploadSectionFile" :action="baseURL + '/file/add'" :on-change="handleChange" :file-list="fileList" :auto-upload="false" accept=".doc, .docx, .pdf">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <span slot="tip" class="el-upload__tip" style="margin-left:20px">【提示】只能上传.doc, .docx, .pdf文件</span>
           </el-upload>
@@ -61,7 +61,6 @@
 export default {
   data() {
     return {
-
       form: {
         file: '',
         name: '',

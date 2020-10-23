@@ -1,4 +1,4 @@
-const baseURL = 'http://47.93.231.64:8080'
+const baseURL = 'http://198.22.1.12:8080'
 
 export default {
   baseURL,

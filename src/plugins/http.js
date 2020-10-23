@@ -7,7 +7,7 @@ const MyHttpServer = {}
 
 MyHttpServer.install = (Vue) => {
   axios.defaults.withCredentials = true
-  axios.defaults.baseURL = 'http://47.93.231.64:8080'
+  axios.defaults.baseURL = 'http://198.22.1.12:8080'
 
   // 添加实例方法
   Vue.prototype.$http = axios
